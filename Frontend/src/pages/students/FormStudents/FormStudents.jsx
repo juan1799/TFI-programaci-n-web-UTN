@@ -52,10 +52,15 @@ const FormStudents = ({ student }) => {
       setTimeout(() => setSuccessMessage(''), 3500);
       setTimeout(() => navigate('/students'), 3500);
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Error al guardar el estudiante');
+      if (error.response && error.response.status === 409) {
+        setErrorMessage('No se puede agregar ya que existe un alumno con ese email o DNI');
+      } else {
+        setErrorMessage(error.response?.data?.message || 'Error al guardar el estudiante');
+      }
       setTimeout(() => setErrorMessage(''), 3500);
     }
   };
+
 
   return (
     <PageContent
@@ -65,10 +70,10 @@ const FormStudents = ({ student }) => {
       ] }
     >
       <div className='p-5'>
-        <form className='p-5 shadow-md' onSubmit={ handleSubmit(onSubmit) }>
+        <form className='p-5 shadow-md dark:text-black' onSubmit={ handleSubmit(onSubmit) }>
           <div className='grid grid-cols-1fr-1fr gap-4 mb-4'>
             <div>
-              <label>Nombre:</label>
+              <label className='dark:text-white'>Nombre:</label>
               <input className='w-full mt-1 px-3 py-2 border border-gray-300 rounded-md' {...register('inputNameValue', { 
                 required: 'Nombre es requerido',
                 maxLength: {
@@ -84,7 +89,7 @@ const FormStudents = ({ student }) => {
             </div>
 
             <div>
-              <label>Apellido:</label>
+              <label  className='dark:text-white'>Apellido:</label>
               <input className='w-full mt-1 px-3 py-2 border border-gray-300 rounded-md' {...register('inputLastNameValue', { 
                 required: 'Apellido es requerido',
                 maxLength: {
@@ -100,7 +105,7 @@ const FormStudents = ({ student }) => {
             </div>
 
             <div>
-              <label>DNI:</label>
+              <label  className='dark:text-white'>DNI:</label>
               <input className='w-full mt-1 px-3 py-2 border border-gray-300 rounded-md' {...register('inputDNIValue', { 
                 required: 'DNI es requerido',
                 maxLength: {
@@ -116,7 +121,7 @@ const FormStudents = ({ student }) => {
             </div>
 
             <div>
-              <label>Email:</label>
+              <label  className='dark:text-white'>Email:</label>
               <input className='w-full mt-1 px-3 py-2 border border-gray-300 rounded-md' {...register('inputEmailValue', { 
                 required: 'Email es requerido',
                 maxLength: {
@@ -136,18 +141,18 @@ const FormStudents = ({ student }) => {
           </button>
         </form>
         {successMessage && <p className='text-green-500 text-lg font-bold mt-4'>{successMessage}</p>}
-        {errorMessage && <p className='text-red-500 text-lg font-bold mt-4'>{errorMessage}</p>}
+        {errorMessage && <p className='text-red-500 dark:text-red-400 text-lg font-bold mt-4'>{errorMessage}</p>}
       </div>
     </PageContent>
   );
 };
 
-// Añadir validación de PropTypes
+
 FormStudents.propTypes = {
   student: PropTypes.shape({
     firstname: PropTypes.string,
     lastname: PropTypes.string,
-    dni: PropTypes.number, // Mantener dni como número
+    dni: PropTypes.number,
     email: PropTypes.string
   }),
   onSuccess: PropTypes.func.isRequired

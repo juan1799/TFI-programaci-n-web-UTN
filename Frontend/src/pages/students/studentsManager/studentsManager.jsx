@@ -20,7 +20,7 @@ const StudentManager = () => {
 
   return (
     <div>
-      <h1 className='flex items-center justify-between w-auto bg-aliceblue p-5 mb-0 text-3xl font-bold'>
+      <h1 className='flex items-center justify-between w-auto bg-aliceblue p-5 mb-0 text-3xl font-bold dark:bg-gray-600 dark:text-white'>
         {id ? 'Actualizar Estudiante' : 'Crear Estudiante'}
       </h1>
       <FormStudents student={student} onSuccess={handleSuccess} />

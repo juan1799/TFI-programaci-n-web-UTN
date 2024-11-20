@@ -82,20 +82,21 @@ const validatePaginationParams = (req, res, next) => {
       next(error);
   }
 };
-const checkForDuplicates = async (req, res, next) => { 
-  const { dni, email } = req.body; 
-  const id = req.params.id ? Number(req.params.id) : null; 
-  try { 
-    const existingStudent = await Student.findOne({ where: { [Op.or]: [{ dni }, { email }], deleted: false, ...(id && { id: { [Op.ne]: id } })  } }); if (existingStudent) { return res.status(400).json({ 
-      message: 'Ya existe un estudiante con el mismo DNI o Email' 
-    }); 
-  } next(); 
-  }catch (error) { 
-    next(error); 
-  }};
+
+// const validateDuplicates = async (req, res, next) => { 
+//   const { dni, email } = req.body; 
+//   const id = req.params.id ? Number(req.params.id) : null; 
+//   try { 
+//     const existingStudent = await Student.findOne({ where: { [Op.or]: [{ dni }, { email }], deleted: false, ...(id && { id: { [Op.ne]: id } })  } }); if (existingStudent) { return res.status(400).json({ 
+//       message: 'Ya existe un estudiante con el mismo DNI o Email' 
+//     }); 
+//   } next(); 
+//   }catch (error) { 
+//     next(error); 
+//   }};
+
 module.exports = {
   validateBody,
   validateById,
   validatePaginationParams,
-  checkForDuplicates
 };

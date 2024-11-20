@@ -1,14 +1,34 @@
 const Student = require('../model/students');
 
 class StudentService {
-    static async create(data) {
-        const lastSID = await Student.getLastSID();
-        const newStudent = {
-            ...data,
-            sid: lastSID + 1
-        };
-        return await Student.create(newStudent);
+
+    static async create(studentData) {
+        try {
+            const lastSid = await Student.getLastSID();
+            const newSid = lastSid + 1;
+    
+            const existingStudent = await Student.findByDniOrEmail(
+                studentData.dni,
+                studentData.email
+            );
+    
+            if (existingStudent) {
+                const error = new Error('Ya existe un estudiante con ese DNI o email');
+                error.statusCode = 409; 
+                throw error;
+            }
+    
+            return await Student.create({
+                ...studentData,
+                sid: newSid,
+                deleted: false
+            });
+        } catch (error) {
+            console.error('Error en create:', error);
+            throw error;
+        }
     }
+    
 
     static async deleteStudent(id) {
         const student = await Student.findByPk(id);

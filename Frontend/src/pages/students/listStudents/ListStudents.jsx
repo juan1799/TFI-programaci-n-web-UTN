@@ -94,7 +94,7 @@ const ListStudents = () => {
             }
             <div className='flex flex-col gap-4 p-5'>
               <div className='flex gap-4'>
-                <input type='text' className='h-10 border rounded-md px-2' placeholder='Buscar por apellido' value={searchText} onChange={e => setSearchText(e.target.value)} />
+                <input type='text' className='h-10 border rounded-md px-2 dark:text-black' placeholder='Buscar por apellido' value={searchText} onChange={e => setSearchText(e.target.value)} />
                 <button className='bg-darkturquoise shadow-sm text-white py-2 px-4 rounded-md cursor-pointer border-none hover:bg-paleturquoise' onClick={() => handleOnSearch()}>Buscar</button>
               </div>
 
@@ -125,7 +125,7 @@ const ListStudents = () => {
               </table>
               <div className='flex justify-end mt-2 items-center gap-2'>
                 <label htmlFor='itemsPerPage'>Total: {totalStudents} - Items por página: </label>
-                <select id='itemsPerPage' className='border rounded-md p-1' value={itemPerPage} onChange={e => { setCurrentPage(1); setItemPerPage(e.target.value); }}>
+                <select id='itemsPerPage' className='border rounded-md p-1 dark:text-black' value={itemPerPage} onChange={e => { setCurrentPage(1); setItemPerPage(e.target.value); }}>
                   <option value='5'>5</option>
                   <option value='10'>10</option>
                   <option value='15'>15</option>

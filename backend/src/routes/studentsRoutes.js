@@ -1,6 +1,6 @@
 const express = require('express');
 const StudentService = require('../services/studentsServices');
-const { validateById, validateBody, validatePaginationParams } = require('../middleware/studentsMiddleware');
+const { validateById, validateBody, validatePaginationParams, validateDuplicates} = require('../middleware/studentsMiddleware');
 
 const router = express.Router();
 router.get('/', validatePaginationParams, async (req, res) => {
@@ -23,14 +23,18 @@ router.get('/', validatePaginationParams, async (req, res) => {
     }
 });
 
-router.post('/', validateBody, async (req, res, next) => {
+router.post('/', validateBody/* ,validateDuplicates*/, async (req, res, next) => {
     try {
         const newStudent = await StudentService.create(req.body);
         res.status(201).json(newStudent);
     } catch (error) {
+        if (error.statusCode === 409) {
+            return res.status(409).json({ message: error.message });
+        }
         next(error);
     }
 });
+
 router.put('/:id', validateById, validateBody, async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
